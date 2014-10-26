@@ -10,6 +10,7 @@
 
 #include <pwd.h>
 #include <regex.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -19,16 +20,22 @@ main( int argc, char** argv, char **arge )
    /*
     * Get user name
     */
+   int opt;
    uid_t uid = geteuid();
    struct passwd *pw = getpwuid(uid);
    string ctladdr( pw ? pw->pw_name : "unknown" );
+   string status( "Shredded" );
+
+   while ( ( opt = getopt(argc, argv, "s:") ) != -1 )
+      if ( opt == 's' )
+         status = optarg;
 
    /*
     * Get the first "Received: " header and all its continuations
     * as a single line, while flushing all input
     */
 
-   string info( argc > 1 ? string(" info=") + argv[1] : "" );
+   string info( argc > optind ? string(" info=") + argv[optind] : "" );
    string id( "non-match" );
    string h, k, s;
    bool searching = true;
@@ -58,7 +65,7 @@ main( int argc, char** argv, char **arge )
    /* log message with the gathered info */
 
    stringstream logger;
-   logger << "logger -i -t shredmail -p mail.info '" << id << ": user=" << ctladdr << " status=Shredded" << info << "'";
+   logger << "logger -i -t shredmail -p mail.info '" << id << ": user=" << ctladdr << " status=" << status << info << "'";
    system( logger.str().c_str() );
 
    return 0;
