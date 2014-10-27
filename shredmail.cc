@@ -18,17 +18,20 @@ int
 main( int argc, char** argv, char **arge )
 {
    /*
-    * Get user name
+    * Process options
     */
    int opt;
-   uid_t uid = geteuid();
-   struct passwd *pw = getpwuid(uid);
-   string ctladdr( pw ? pw->pw_name : "unknown" );
    string status( "Shredded" );
-
    while ( ( opt = getopt(argc, argv, "s:") ) != -1 )
       if ( opt == 's' )
          status = optarg;
+
+   /*
+    * Get user name
+    */
+   uid_t uid = geteuid();
+   struct passwd *pw = getpwuid(uid);
+   string ctladdr( pw ? pw->pw_name : "unknown" );
 
    /*
     * Get the first "Received: " header and all its continuations
