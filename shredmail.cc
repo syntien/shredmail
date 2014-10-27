@@ -40,12 +40,12 @@ main( int argc, char** argv, char **arge )
 
    string info( argc > optind ? string(" info=") + argv[optind] : "" );
    string id( "non-match" );
-   string h, k, s;
+   string h, s;
    bool searching = true;
    int n;
 
    while ( cin.good() && ( getline( cin, s ), cin.good() ) ) {
-      if ( searching && s.size() > 0 && ! s.substr( 0, 10 ).compare( ( k = "Received: " ) ) ) {
+      if ( searching && s.size() > 0 && ! s.substr( 0, 10 ).compare( "Received: " ) ) {
          for ( h = s ; searching && cin.good() && ( getline( cin, s ), cin.good() ) ; ) {
             n = s.find_first_not_of( " \t" );
             if ( n != 0 && n != string::npos )
