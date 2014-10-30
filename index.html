@@ -15,7 +15,8 @@
   <h2>How do I use shredmail?</h2>
   <p>When called from a procmail delivering recipie, shredmail will remove the mail message and log it as shredded. The logged message id lets you correlate this action with other log messages.</p>
   <p>This is equivalent to delivering to /dev/null, but it produces a more meaningful log message that can optionally indicate which procmail rule called shredmail.</p>
-  <p>When called from a procmail non-delivering recipie, procmail retains the mail message, so shredmail acts as a logging facility. In this case, the -s option can be used to change the status from "Shredded" to a more appropriate value (e.g., "Delivered" or "Forwarded"), while the optional message can specify the destination (e.g., "INBOX", or "someone@example.com").</p>
+  <p>When called from a procmail non-delivering recipie, procmail retains the mail message, so shredmail acts as a logging facility.</p>
+  <p>In this case, the -s option can be used to change the status from "Shredded" to a more appropriate value (e.g., "Delivered" or "Forwarded"), while the optional message can specify the destination (e.g., "INBOX", or "someone@example.com").</p>
   <h2>Where can I get shredmail?</h2>
   <p>shredmail is available <a target="_blank" href="https://github.com/syntien/shredmail">on github</a>.</p>
   <h2>Is there an example?</h2>
