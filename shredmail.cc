@@ -1,6 +1,6 @@
 /*
    Generate a log line with the SMTP id and user name for a trashed mail message seen
-   the standard input stream, while flushing the stream so the mail is not delivered.
+   on standard input stream, while flushing the stream so the mail is not delivered.
 */
 
 #include <cstdio>
