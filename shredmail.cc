@@ -67,9 +67,9 @@ main( int argc, char** argv, char **arge )
 
    /* log message with the gathered info */
 
-   stringstream logger;
-   logger << "logger -i -t shredmail -p mail.info '" << id << ": user=" << ctladdr << " status=" << status << info << "'";
-   system( logger.str().c_str() );
+   stringstream ss;
+   ss << "'" << id << ": user=" << ctladdr << " status=" << status << info << "'";
+   execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", ss.str().c_str() );
 
    return 0;
 }
