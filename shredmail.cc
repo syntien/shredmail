@@ -68,8 +68,7 @@ main( int argc, char** argv, char **arge )
    /* log message with the gathered info */
 
    stringstream ss;
-   ss << "'" << id << ": user=" << ctladdr << " status=" << status << info << "'";
-   execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", ss.str().c_str() );
-
+   ss << id << ": user=" << ctladdr << " status=" << status << info;
+   execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", ss.str().c_str(), (char *) NULL );
    return 0;
 }
