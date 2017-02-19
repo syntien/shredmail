@@ -18,13 +18,14 @@ int
 main( int argc, char** argv, char **arge )
 {
    /*
-    * Process options
+    * Process command line options
     */
    int opt;
    string status( "Shredded" );
    while ( ( opt = getopt(argc, argv, "s:") ) != -1 )
       if ( opt == 's' )
          status = optarg;
+   string info( argc > optind ? string(" info=") + argv[optind] : "" );
 
    /*
     * Get user name
@@ -38,10 +39,8 @@ main( int argc, char** argv, char **arge )
     * as a single line, while flushing all input
     */
 
-   string info( argc > optind ? string(" info=") + argv[optind] : "" );
-   string id( "non-match" );
-   string h, s;
    bool searching = true;
+   string h, s;
    int n;
 
    while ( cin.good() && ( getline( cin, s ), cin.good() ) ) {
@@ -60,6 +59,7 @@ main( int argc, char** argv, char **arge )
 
    regex_t reg;
    regmatch_t match[2];
+   string id( "non-match" );
 
    if ( 0 == regcomp( &reg, " *by .* id ([[:alnum:]]+)", REG_EXTENDED ) )
       if ( 0 == regexec( &reg, h.c_str(), 2, match, 0 ) )
