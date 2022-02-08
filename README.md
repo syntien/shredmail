@@ -5,4 +5,4 @@ c++ program callable from a delivering procmailrc recipe to shred mail and log t
 
 When called from a non-delivering procmailrc recipe it will retain the message and log the specified action (via -s option) with smtp id and optional message.
 
-See the wiki for examples.
+See the [wiki](https://github.com/syntien/shredmail/wiki) for examples, or the [shredmail landing page](https://shredmail.github.com) for additional information.
