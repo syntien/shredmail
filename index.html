@@ -12,6 +12,7 @@
   <hr>
   <h2>What is shredmail?</h2>
   <p>shredmail reads a mail message from standard input, flushing the input stream, then writes a "status=Shredded" message to syslogd via the mail facility along with the message id extracted from the first "Received:" header encountered; the logged message can include an optional user string using a command line parameter.</p>
+  <p>The message id logged by shredmail correlates shredmail messages with other maillog messages from opendkim, postfix, sendmail, spamd, and other processes handling the same mail message. Thus, shredmail provides better logging of message disposition than procmail alone.</p>
   <h2>How do I use shredmail?</h2>
   <p>When called from a procmail delivering recipie, shredmail will remove the mail message and log it as shredded. The logged message id lets you correlate this action with other log messages.</p>
   <p class="indent">This is equivalent to delivering to /dev/null, but it produces a more meaningful log message that can optionally indicate which procmail rule called shredmail.</p>
