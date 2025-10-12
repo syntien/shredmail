@@ -5,14 +5,16 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <format>
 #include <iostream>
-#include <sstream>
+#include <regex>
+#include <string>
 
 #include <pwd.h>
-#include <regex.h>
 #include <unistd.h>
 
 using namespace std;
+using namespace std::regex_constants;
 
 int
 main( int argc, char** argv, char **arge )
@@ -40,15 +42,15 @@ main( int argc, char** argv, char **arge )
     */
 
    bool searching = true;
-   string h, s;
+   string header, line;
    int n;
 
-   while ( cin.good() && ( getline( cin, s ), cin.good() ) ) {
-      if ( searching && s.size() > 0 && ! s.substr( 0, 10 ).compare( "Received: " ) ) {
-         for ( h = s ; searching && cin.good() && ( getline( cin, s ), cin.good() ) ; ) {
-            n = s.find_first_not_of( " \t" );
+   while ( cin.good() && ( getline( cin, line ), cin.good() ) ) {
+      if ( searching && line.size() > 0 && ! line.substr( 0, 10 ).compare( "Received: " ) ) {
+         for ( header = line ; searching && cin.good() && ( getline( cin, line ), cin.good() ) ; ) {
+            n = line.find_first_not_of( " \t" );
             if ( n != 0 && n != string::npos )
-               h += " " + s.substr( n );
+               header += " " + line.substr( n );
             else
                searching = false;
          }
@@ -57,17 +59,12 @@ main( int argc, char** argv, char **arge )
 
    /* Extract the SMTP id from the header line */
 
-   regex_t reg;
-   regmatch_t match[2];
-   string id( "non-match" );
-
-   if ( 0 == regcomp( &reg, " *by .* id ([[:alnum:]]+)", REG_EXTENDED ) )
-      if ( 0 == regexec( &reg, h.c_str(), 2, match, 0 ) )
-         id = h.substr( match[1].rm_so, match[1].rm_eo - match[1].rm_so );
+   smatch m;
+   regex rx( "\\s*by .* id ([0-9A-Za-z]+)", ECMAScript );
+   string id( regex_search( header, m, rx, match_default ) ? m[1].str() : "non-match" );
 
    /* log message with the gathered info */
 
-   stringstream ss;
-   ss << id << ": user=" << ctladdr << " status=" << status << info;
-   return execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", ss.str().c_str(), (char *) NULL );
+   string msg( format( "{:s}: user={:s} status={:s} {:s}", id, ctladdr, status, info ) );
+   return execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", msg.c_str(), (char *) NULL );
 }
