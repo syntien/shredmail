@@ -60,7 +60,7 @@ main( int argc, char** argv, char **arge )
    /* Extract the SMTP id from the header line */
 
    smatch m;
-   regex rx( "\\s*by .* id ([0-9A-Za-z]+)", ECMAScript );
+   regex rx( R"(\s*by .* id ([0-9A-Za-z]+))", ECMAScript );
    string id( regex_search( header, m, rx, match_default ) ? m[1].str() : "non-match" );
 
    /* log message with the gathered info */
