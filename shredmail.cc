@@ -7,7 +7,6 @@
 #include <cstdlib>
 #include <format>
 #include <iostream>
-#include <map>
 #include <regex>
 #include <string>
 
@@ -64,17 +63,8 @@ main( int argc, char** argv, char **arge )
    regex rx( R"(\s+by .* id ([0-9A-Za-z]+))", ECMAScript );
    string id( regex_search( header, m, rx, match_default ) ? m[1].str() : "non-match" );
 
-   /* get version number */
-
-   map<string,string>  month = { { "Jan", "01" }, { "Feb", "02" }, { "Mar", "03" }, { "Apr", "04" },
-                                 { "May", "05" }, { "Jun", "06" }, { "Jul", "07" }, { "Aug", "08" },
-                                 { "Sep", "09" }, { "Oct", "10" }, { "Nov", "11" }, { "Dec", "12" } };
-   rx = R"(\.0)";
-   string date( __DATE__ );
-   auto version = regex_replace( "shredmail/" + date.substr( 9 ) + "." + month[date.substr( 0, 3 )] + "." + date.substr( 4, 2 ), rx, "." );
-
    /* log message with the gathered info */
 
    string msg( format( "{:s}: user={:s} status={:s} {:s}", id, ctladdr, status, info ) );
-   return execlp( "logger", "logger", "-i", "-t", version.c_str(), "-p", "mail.info", msg.c_str(), (char *) NULL );
+   return execlp( "logger", "logger", "-i", "-t", "shredmail", "-p", "mail.info", msg.c_str(), (char *) NULL );
 }
